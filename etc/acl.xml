@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+	<acl>
+		<resources>
+			<resource id="Magento_Backend::admin">
+				<resource id="WeProvide_NginxRedirect::nginxredirect" sortOrder="10" title="nginxredirect">
+					<resource id="WeProvide_NginxRedirect::redirect_index" sortOrder="10" title="redirect index"/>
+				</resource>
+			</resource>
+		</resources>
+	</acl>
+</config>
