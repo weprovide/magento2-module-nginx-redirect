@@ -6,24 +6,27 @@ use Magento\Backend\App\Action\Context;
 use WeProvide\NginxRedirect\Model\RedirectFactory;
 use Magento\Framework\View\Result\PageFactory;
 use \Magento\Framework\Controller\ResultFactory;
+use WeProvide\NginxRedirect\Model\ResourceModel\Redirect\CollectionFactory;
 
-class Delete extends \WeProvide\NginxRedirect\Controller\Adminhtml\Redirect\Index
+class Delete extends Index
 {
     protected $redirectFactory;
 
     /**
      * Delete constructor.
-     * @param RedirectFactory $redirectFactory
-     * @param Context         $context
-     * @param PageFactory     $resultPageFactory
+     * @param Context           $context
+     * @param PageFactory       $resultPageFactory
+     * @param CollectionFactory $collectionFactory
+     * @param RedirectFactory   $redirectFactory
      */
     public function __construct(
-        RedirectFactory $redirectFactory,
         Context $context,
-        PageFactory $resultPageFactory
+        PageFactory $resultPageFactory,
+        CollectionFactory $collectionFactory,
+        RedirectFactory $redirectFactory
     ) {
+        parent::__construct($context, $resultPageFactory, $collectionFactory);
         $this->redirectFactory = $redirectFactory;
-        parent::__construct($context, $resultPageFactory);
     }
 
     /**
@@ -39,6 +42,7 @@ class Delete extends \WeProvide\NginxRedirect\Controller\Adminhtml\Redirect\Inde
             try {
                 $redirect = $this->redirectFactory->create()->load($id);
                 $redirect->delete();
+                $this->messageManager->addSuccessMessage(__('Redirect %s successfully deleted.'), $id);
                 return $this->resultFactory->create(ResultFactory::TYPE_REDIRECT)->setPath('nginxredirect/redirect/index');
             } catch (\Magento\Framework\Exception\LocalizedException $e) {
                 $this->messageManager->addError($e->getMessage());
@@ -54,7 +58,7 @@ class Delete extends \WeProvide\NginxRedirect\Controller\Adminhtml\Redirect\Inde
                     __('Something went wrong while deleting the redirect data')
                 );
                 $this->_objectManager->get('Psr\Log\LoggerInterface')->critical($e);
-                $this->_redirect('nginxredirect/redirect/edit', ['id' => $this->getRequest()->getParam('redirect_id')]);
+                $this->_redirect('nginxredirect/redirect/edit', ['id' => $this->getRequest()->getParam('id')]);
                 return;
             }
         }

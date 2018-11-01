@@ -23,20 +23,20 @@
                 <item name="class" xsi:type="string">primary</item>
                 <item name="url" xsi:type="string">*/*/create</item>
             </item>
-            <item name="import" xsi:type="array">
-                <item name="name" xsi:type="string">manual_import</item>
-                <item name="label" xsi:type="string" translate="true">Start Manual Import</item>
-                <item name="class" xsi:type="string">secundary</item>
-                <item name="url" xsi:type="string">*/*/import</item>
+            <item name="export" xsi:type="array">
+                <item name="name" xsi:type="string">export</item>
+                <item name="label" xsi:type="string" translate="true">Export redirects</item>
+                <item name="class" xsi:type="string">primary</item>
+                <item name="url" xsi:type="string">*/*/export</item>
             </item>
         </item>
     </argument>
     <dataSource name="redirect_listing_data_source">
         <argument name="dataProvider" xsi:type="configurableObject">
-            <argument name="class" xsi:type="string">WeProvide\NginxRedirect\Ui\DataProvider\RedirectDataProvider</argument>
+            <argument name="class" xsi:type="string">WeProvide\NginxRedirect\Ui\DataProvider\Grid\GridDataProvider</argument>
             <argument name="name" xsi:type="string">redirect_listing_data_source</argument>
-            <argument name="primaryFieldName" xsi:type="string">entity_id</argument>
-            <argument name="requestFieldName" xsi:type="string">entity_id</argument>
+            <argument name="primaryFieldName" xsi:type="string">id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="update_url" xsi:type="url" path="mui/index/render"/>
@@ -68,118 +68,49 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="columnsData" xsi:type="array">
-                        <item name="provider" xsi:type="string">redirect_listing.redirect_listing.redirects_columns</item>
+                        <item name="provider" xsi:type="string">redirect_listing.redirects_columns</item>
                     </item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/controls/columns</item>
                     <item name="displayArea" xsi:type="string">dataGridActions</item>
                 </item>
             </argument>
         </component>
-        <exportButton name="export_button">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="selectProvider" xsi:type="string">device_listing.device_listing.device_columns.ids</item>
-                </item>
-            </argument>
-        </exportButton>
-        <filterSearch name="fulltext">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="provider" xsi:type="string">device_listing.device_listing_data_source</item>
-                    <item name="chipsProvider" xsi:type="string">device_listing.device_listing.listing_top.listing_filters_chips</item>
-                    <item name="storageConfig" xsi:type="array">
-                        <item name="provider" xsi:type="string">device_listing.device_listing.listing_top.bookmarks</item>
-                        <item name="namespace" xsi:type="string">current.search</item>
-                    </item>
-                </item>
-            </argument>
-        </filterSearch>
         <filters name="listing_filters">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="columnsProvider" xsi:type="string">device_listing.device_listing.device_columns</item>
-                    <item name="storageConfig" xsi:type="array">
-                        <item name="provider" xsi:type="string">device_listing.device_listing.listing_top.bookmarks</item>
-                        <item name="namespace" xsi:type="string">current.filters</item>
-                    </item>
-                    <item name="childDefaults" xsi:type="array">
-                        <item name="provider" xsi:type="string">device_listing.device_listing.listing_top.listing_filters</item>
-                        <item name="imports" xsi:type="array">
-                            <item name="visible" xsi:type="string">device_listing.device_listing.device_columns.${ $.index }:visible</item>
-                        </item>
-                    </item>
-                </item>
-            </argument>
+            <settings>
+                <templates>
+                    <filters>
+                        <select>
+                            <param name="template" xsi:type="string">ui/grid/filters/elements/ui-select</param>
+                            <param name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</param>
+                        </select>
+                    </filters>
+                </templates>
+            </settings>
+            <filterSelect name="id" provider="${ $.parentName }">
+                <settings>
+                    <captionValue>0</captionValue>
+                    <options class="Magento\Cms\Ui\Component\Listing\Column\Cms\Options"/>
+                    <label translate="true">Store View</label>
+                    <dataScope>id</dataScope>
+                    <imports>
+                        <link name="visible">componentType = column, index = ${ $.index }:visible</link>
+                    </imports>
+                </settings>
+            </filterSelect>
         </filters>
         <massaction name="listing_massaction">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="selectProvider" xsi:type="string">device_listing.device_listing.device_columns.ids</item>
-                    <item name="component" xsi:type="string">Magento_Ui/js/grid/tree-massactions</item>
-                    <item name="indexField" xsi:type="string">entity_id</item>
-                </item>
-            </argument>
             <action name="delete">
-                <argument name="data" xsi:type="array">
-                    <item name="config" xsi:type="array">
-                        <item name="type" xsi:type="string">delete</item>
-                        <item name="label" xsi:type="string" translate="true">Remove Device</item>
-                        <item name="url" xsi:type="url" path="device/device/massDelete"/>
-                        <item name="confirm" xsi:type="array">
-                            <item name="title" xsi:type="string" translate="true">Delete items</item>
-                            <item name="message" xsi:type="string" translate="true">Are you sure to delete selected device(s)?</item>
-                        </item>
-                    </item>
-                </argument>
-            </action>
-            <action name="edit">
-                <argument name="data" xsi:type="array">
-                    <item name="config" xsi:type="array">
-                        <item name="type" xsi:type="string">edit</item>
-                        <item name="label" xsi:type="string" translate="true">Edit Device</item>
-                        <item name="callback" xsi:type="array">
-                            <item name="provider" xsi:type="string">device_listing.device_listing.device_columns_editor</item>
-                            <item name="target" xsi:type="string">editSelected</item>
-                        </item>
-                    </item>
-                </argument>
-            </action>
-            <action name="link">
-                <argument name="data" xsi:type="array">
-                    <item name="config" xsi:type="array">
-                        <item name="type" xsi:type="string">link_devices</item>
-                        <item name="label" xsi:type="string" translate="true">Link Devices</item>
-                    </item>
-                </argument>
-                <argument name="actions" xsi:type="array">
-                    <item name="0" xsi:type="array">
-                        <item name="type" xsi:type="string">enable</item>
-                        <item name="label" xsi:type="string" translate="true">Lowest ID = parent</item>
-                        <item name="url" xsi:type="url" path="device/device/massLink">
-                            <param name="parent">lowest</param>
-                        </item>
-                    </item>
-                    <item name="1" xsi:type="array">
-                        <item name="type" xsi:type="string">disable</item>
-                        <item name="label" xsi:type="string" translate="true">Highest ID = parent</item>
-                        <item name="url" xsi:type="url" path="device/device/massLink">
-                            <param name="parent">highest</param>
-                        </item>
-                    </item>
-                </argument>
+                <settings>
+                    <confirm>
+                        <message translate="true">Are you sure you want to delete selected items?</message>
+                        <title translate="true">Delete items</title>
+                    </confirm>
+                    <url path="*/*/massdelete"/>
+                    <type>delete</type>
+                    <label translate="true">Delete</label>
+                </settings>
             </action>
         </massaction>
-        <!--<paging name="listing_paging">-->
-        <!--<argument name="data" xsi:type="array">-->
-        <!--<item name="config" xsi:type="array">-->
-        <!--<item name="storageConfig" xsi:type="array">-->
-        <!--<item name="provider" xsi:type="string">device_listing.device_listing.listing_top.bookmarks</item>-->
-        <!--<item name="namespace" xsi:type="string">current.paging</item>-->
-        <!--</item>-->
-        <!--<item name="selectProvider" xsi:type="string">device_listing.device_listing.device_columns.ids</item>-->
-        <!--</item>-->
-        <!--</argument>-->
-        <!--</paging>-->
     </container>
     <columns name="redirects_columns">
         <selectionsColumn name="ids">

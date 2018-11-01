@@ -3,13 +3,11 @@
 
 namespace WeProvide\NginxRedirect\Controller\Adminhtml\Redirect;
 
-use Magento\Framework\Controller\ResultFactory;
-
-class Create extends \WeProvide\NginxRedirect\Controller\Adminhtml\Redirect\Index
+class Create extends Index
 {
     public function execute()
     {
-        $forward = $this->resultFactory->create(ResultFactory::TYPE_FORWARD);
+        $this->_view->getPage()->getConfig()->getTitle()->prepend(__('Create new Nginx Redirect'));
         return $this->resultPageFactory->create();
     }
 

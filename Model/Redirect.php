@@ -10,27 +10,19 @@ class Redirect extends \Magento\Framework\Model\AbstractModel implements \Magent
 
     protected $_eventPrefix = 'nginxredirect';
 
-//    public function __construct()
-//    {
-//        $this->_init('WeProvide\NginxRedirect\Model\ResourceModel\Redirect');
-//    }
 
-    public function __construct(\Magento\Framework\Model\Context $context, \Magento\Framework\Registry $registry, \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null, \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null, array $data = [])
+    protected function _construct()
     {
-        parent::__construct($context, $registry, $resource, $resourceCollection, $data);
-        $this->_init('WeProvide\NginxRedirect\Model\ResourceModel\Redirect');
+        $this->_init(\WeProvide\NginxRedirect\Model\ResourceModel\Redirect::class);
     }
 
-
+    /**
+     * Return unique ID(s) for each object in system
+     *
+     * @return string[]
+     */
     public function getIdentities()
     {
-
-    }
-
-    public function getDefaultValues()
-    {
-        $values = [];
-
-        return $values;
+        return [self::CACHE_TAG . '_' . $this->getId(), self::CACHE_TAG ];
     }
 }

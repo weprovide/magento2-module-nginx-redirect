@@ -2,6 +2,8 @@
 
 namespace WeProvide\NginxRedirect\Model\ResourceModel\Redirect;
 
+use WeProvide\NginxRedirect\Model\Redirect;
+
 class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
 {
     protected $_idFieldName = 'id';
@@ -15,6 +17,6 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
      */
     protected function _construct()
     {
-        $this->_init('WeProvide\NginxRedirect\Model\Redirect', 'WeProvide\NginxRedirect\Model\ResourceModel\Redirect');
+        $this->_init(Redirect::class, \WeProvide\NginxRedirect\Model\ResourceModel\Redirect::class);
     }
 }

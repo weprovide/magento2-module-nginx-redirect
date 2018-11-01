@@ -5,12 +5,9 @@
  * See COPYING.txt for license details.
  */
 
-namespace WeProvide\NginxRedirect\Controller\Adminhtml\Step;
+namespace WeProvide\NginxRedirect\Controller\Adminhtml\Redirect;
 
-use Magento\Backend\App\Action\Context;
-use Magento\Framework\Controller\ResultFactory;
-
-class MassDelete
+class MassDelete extends Index
 {
 
     /**
@@ -22,36 +19,18 @@ class MassDelete
      */
     public function execute()
     {
-//        $ids        = $this->getRequest()->getParam('selected');
-//        $collection = $this->stepFactory->create()->getCollection()->addFieldToFilter('step_id', ['in' => $ids]);
-//        $this->deleteSteps($ids);
-//
-//        foreach ($collection as $step) {
-//            $step->delete();
-//        }
-//
-//        $this->_redirect('proavmountadvisor/step/');
-    }
+        $ids = $this->getRequest()->getParam('selected');
 
-    /**
-     * Delete steps and childs
-     *
-     * @param $ids
-     */
-    public function deleteSteps($ids)
-    {
-//        if (count($ids) === 0) {
-//            return;
-//        }
-//
-//        $collection = $this->stepFactory->create()->getCollection()->addFieldToFilter('parent_id', ['in' => $ids]);
-//        $childIds   = [];
-//        foreach ($collection as $step) {
-//            $childIds[] = $step->getId();
-//            $step->delete();
-//        }
-//
-//        $this->deleteSteps($childIds);
+        if ($ids) {
+            $idsString = implode(',', $ids);
+            $collection = $this->collectionFactory->create()->addFieldToFilter('id', ['in' => $ids]);
+
+            foreach ($collection as $redirect) {
+                $redirect->delete();
+            }
+            $this->messageManager->addSuccessMessage(__('Redirect(s) %s successfully deleted.'), $idsString);
+        }
+        $this->_redirect('nginxredirect/redirect/index');
     }
 
     /**
@@ -59,6 +38,7 @@ class MassDelete
      */
     protected function _isAllowed()
     {
-//
+        return parent::_isAllowed();
+
     }
 }

@@ -1,25 +1,32 @@
 <?php
 
-
 namespace WeProvide\NginxRedirect\Controller\Adminhtml\Redirect;
+
+use WeProvide\NginxRedirect\Model\ResourceModel\Redirect\CollectionFactory;
 
 class Index extends \Magento\Backend\App\Action
 {
 
     protected $resultPageFactory;
+    /**
+     * @var CollectionFactory
+     */
+    protected $collectionFactory;
 
     /**
-     * Constructor
-     *
-     * @param \Magento\Backend\App\Action\Context  $context
+     * Index constructor.
+     * @param \Magento\Backend\App\Action\Context        $context
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
+     * @param CollectionFactory                          $collectionFactory
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
-        \Magento\Framework\View\Result\PageFactory $resultPageFactory
+        \Magento\Framework\View\Result\PageFactory $resultPageFactory,
+        CollectionFactory $collectionFactory
     ) {
-        $this->resultPageFactory = $resultPageFactory;
         parent::__construct($context);
+        $this->resultPageFactory = $resultPageFactory;
+        $this->collectionFactory = $collectionFactory;
     }
 
     /**
@@ -29,6 +36,7 @@ class Index extends \Magento\Backend\App\Action
      */
     public function execute()
     {
+        $this->_view->getPage()->getConfig()->getTitle()->prepend(__('Nginx Redirects'));
         return $this->resultPageFactory->create();
     }
 }

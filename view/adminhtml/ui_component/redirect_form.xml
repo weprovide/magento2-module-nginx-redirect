@@ -15,8 +15,8 @@
     </argument>
     <settings>
         <buttons>
-            <button name="save" class="Magento\Cms\Block\Adminhtml\Page\Edit\SaveButton"/>
-            <button name="back" class="Magento\Cms\Block\Adminhtml\Page\Edit\BackButton"/>
+            <button name="save" class="WeProvide\NginxRedirect\Block\Adminhtml\Redirect\Edit\SaveButton"/>
+            <button name="back" class="WeProvide\NginxRedirect\Block\Adminhtml\Redirect\Edit\BackButton"/>
         </buttons>
         <namespace>redirect_form</namespace>
         <dataScope>data</dataScope>
@@ -31,7 +31,7 @@
             </item>
         </argument>
         <settings>
-            <submitUrl path="cms/page/save"/>
+            <submitUrl path="nginxredirect/redirect/save"/>
         </settings>
         <dataProvider class="WeProvide\NginxRedirect\Ui\DataProvider\RedirectDataProvider" name="page_form_data_source">
             <settings>
@@ -56,7 +56,7 @@
                 <dataScope>id</dataScope>
             </settings>
         </field>
-        <field name="source" sortOrder="20" formElement="input">
+        <field name="source" sortOrder="10" formElement="input">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="source" xsi:type="string">source</item>
@@ -86,7 +86,7 @@
                 <dataScope>target</dataScope>
             </settings>
         </field>
-        <field name="status">
+        <field name="status" sortOrder="30">
             <argument name="data" xsi:type="array">
                 <item name="options" xsi:type="object">WeProvide\NginxRedirect\Model\Status</item>
                 <item name="config" xsi:type="array">

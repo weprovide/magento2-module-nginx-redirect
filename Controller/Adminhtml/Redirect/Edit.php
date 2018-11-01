@@ -4,44 +4,48 @@ namespace WeProvide\NginxRedirect\Controller\Adminhtml\Redirect;
 
 use WeProvide\NginxRedirect\Model\Redirect;
 use WeProvide\NginxRedirect\Model\ResourceModel\Redirect\CollectionFactory;
+use Magento\Framework\View\Result\PageFactory;
+use Magento\Backend\App\Action\Context;
 
 class Edit extends \WeProvide\NginxRedirect\Controller\Adminhtml\Redirect\Index
 {
     protected $resultPageFactory;
-    protected $coreRegistry;
     protected $redirect;
     protected $collection;
 
-
-   public function __construct(
-       \Magento\Framework\Registry $coreRegistry,
-       Redirect $redirect,
-       CollectionFactory $collection,
-       \Magento\Backend\App\Action\Context $context,
-       \Magento\Framework\View\Result\PageFactory $resultPageFactory
-   )
-   {
-       $this->coreRegistry = $coreRegistry;
-       $this->redirect = $redirect;
-       $this->collection = $collection;
-       parent::__construct($context, $resultPageFactory);
-   }
+    /**
+     * Edit constructor.
+     * @param Context           $context
+     * @param PageFactory       $resultPageFactory
+     * @param CollectionFactory $collectionFactory
+     * @param Redirect          $redirect
+     */
+    public function __construct(
+        Context $context,
+        PageFactory $resultPageFactory,
+        CollectionFactory $collectionFactory,
+        Redirect $redirect
+    ) {
+        parent::__construct($context, $resultPageFactory, $collectionFactory);
+        $this->redirect = $redirect;
+    }
 
     public function execute()
     {
-//        var_dump($this->getRequest()); die('');
         $id = $this->getRequest()->getParam('id');
 
-
         if (!is_null($id)) {
+            $this->_view->getPage()->getConfig()->getTitle()->prepend(__('Edit Nginx Redirect'));
             $model = $this->redirect->load($id);
             if (is_null($model->getId())) {
-                $this->messageManager->addError(__('This rule no longer exists.'));
-                $this->_redirect('nginxredirect/index');
+                $this->messageManager->addError(__('This redirect no longer exists.'));
+                $this->_redirect('nginxredirect/redirect/index');
                 return;
             }
+            $this->messageManager->addSuccessMessage(__('Redirect %s successfully edited.'), $id);
         }
 
+        $this->messageManager->addSuccessMessage(__('Redirect successfully added.'));
         return $this->resultPageFactory->create();
     }
 

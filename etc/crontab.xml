@@ -2,7 +2,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
     <group id="default">
         <job name="write_config" instance="WeProvide\NginxRedirect\Cron\Write" method="execute">
-            <schedule>* * * * *</schedule>
+            <schedule>00 01,13 * * *</schedule>
         </job>
     </group>
 </config>

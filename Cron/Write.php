@@ -25,7 +25,7 @@ class Write
         $redirects = $this->collection->create();
         $file = $this->scopeConfig->getValue(self::PATH);
 
-        if ($data = fopen($_SERVER['DOCUMENT_ROOT'] . $file, "wb")) {
+        if ($data = fopen($file, "wb")) {
 
             foreach ($redirects as $redirect) {
                 $line = 'location /' . $redirect->getSource() . ' { return ' . $redirect->getStatus() . ' ' . $redirect->getTarget() . '; }' . PHP_EOL;
