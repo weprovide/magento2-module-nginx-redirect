@@ -27,21 +27,15 @@ class Save extends Index
      * @param Context                 $context
      * @param PageFactory             $resultPageFactory
      * @param CollectionFactory       $collectionFactory
-     * @param FileFactory             $fileFactory
-     * @param Csv                     $csvProcessor
-     * @param DirectoryList           $directoryList
      */
     public function __construct(
         RedirectFactory $redirectFactory,
         RedirectResourceFactory $redirectResourceFactory,
         Context $context,
         PageFactory $resultPageFactory,
-        CollectionFactory $collectionFactory,
-        FileFactory $fileFactory,
-        Csv $csvProcessor,
-        DirectoryList $directoryList
+        CollectionFactory $collectionFactory
     ) {
-        parent::__construct($context, $resultPageFactory, $collectionFactory, $fileFactory, $csvProcessor, $directoryList);
+        parent::__construct($context, $resultPageFactory, $collectionFactory);
         $this->redirectFactory         = $redirectFactory;
         $this->redirectResourceFactory = $redirectResourceFactory;
     }
