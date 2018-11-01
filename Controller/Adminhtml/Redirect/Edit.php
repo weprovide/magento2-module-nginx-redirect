@@ -35,7 +35,7 @@ class Edit extends \WeProvide\NginxRedirect\Controller\Adminhtml\Redirect\Index
 
         if (!is_null($id)) {
             $model = $this->redirect->load($id);
-            if (is_null($model->getRedirectId())) {
+            if (is_null($model->getId())) {
                 $this->messageManager->addError(__('This rule no longer exists.'));
                 $this->_redirect('nginxredirect/index');
                 return;

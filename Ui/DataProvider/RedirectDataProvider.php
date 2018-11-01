@@ -25,15 +25,10 @@ class RedirectDataProvider extends AbstractDataProvider
     public function getData()
     {
         $collection = $this->getCollection();
-        $counter = $collection->getSize();
 
-        $arrItems = [
-            'totalRecords' => $counter,
-            'items' => [],
-        ];
-
+        $arrItems = [];
         foreach ($collection as $item) {
-            $arrItems['items'][] = $item->toArray([]);
+            $arrItems[$item->getId()] = $item->toArray([]);
         }
 
         return $arrItems;

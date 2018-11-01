@@ -51,7 +51,7 @@ class Actions extends Column
                 $item[$this->getData('name')]['edit'] = [
                     'href' => $this->urlBuilder->getUrl(
                         'nginxredirect/redirect/edit',
-                        ['id' => $item['redirect_id']]
+                        ['id' => $item['id']]
                     ),
                     'label' => __('Edit'),
                     'hidden' => false,
@@ -60,7 +60,7 @@ class Actions extends Column
                 $item[$this->getData('name')]['add_child'] = [
                     'href' => $this->urlBuilder->getUrl(
                         'nginxredirect/redirect/create',
-                        ['parent_id' => $item['redirect_id']]
+                        ['parent_id' => $item['id']]
                     ),
                     'label' => __('Add new redirect'),
                     'hidden' => false,
@@ -68,7 +68,7 @@ class Actions extends Column
                 $item[$this->getData('name')]['delete'] = [
                     'href' => $this->urlBuilder->getUrl(
                         'nginxredirect/redirect/delete',
-                        ['id' => $item['redirect_id']]
+                        ['id' => $item['id']]
                     ),
                     'label' => __('Delete redirect'),
                     'hidden' => false,

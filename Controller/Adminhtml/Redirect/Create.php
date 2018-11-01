@@ -10,7 +10,7 @@ class Create extends \WeProvide\NginxRedirect\Controller\Adminhtml\Redirect\Inde
     public function execute()
     {
         $forward = $this->resultFactory->create(ResultFactory::TYPE_FORWARD);
-        return $forward->forward('edit');
+        return $this->resultPageFactory->create();
     }
 
     /**

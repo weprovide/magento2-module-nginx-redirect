@@ -13,6 +13,6 @@ class Redirect extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 
     public function _construct()
     {
-        $this->_init('nginxredirects', 'redirect_id');
+        $this->_init('nginxredirects', 'id');
     }
 }

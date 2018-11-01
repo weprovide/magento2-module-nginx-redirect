@@ -185,16 +185,16 @@
         <selectionsColumn name="ids">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="indexField" xsi:type="string">redirect_id</item>
+                    <item name="indexField" xsi:type="string">id</item>
                 </item>
             </argument>
         </selectionsColumn>
-        <column name="redirect_id">
+        <column name="id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
                     <item name="sorting" xsi:type="string">asc</item>
-                    <item name="label" translate="true" xsi:type="string">redirect_id</item>
+                    <item name="label" translate="true" xsi:type="string">id</item>
                 </item>
             </argument>
         </column>
@@ -228,7 +228,7 @@
         <actionsColumn name="actions" class="WeProvide\NginxRedirect\Ui\Component\Listing\Column\Actions">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="indexField" xsi:type="string">redirect_id</item>
+                    <item name="indexField" xsi:type="string">id</item>
                 </item>
             </argument>
         </actionsColumn>

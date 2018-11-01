@@ -1,84 +1,104 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 /**
- * Copyright © 2016 Magento. All rights reserved.
+ * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 -->
-<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/Ui/etc/ui_configuration.xsd">
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <argument name="data" xsi:type="array">
         <item name="js_config" xsi:type="array">
-            <item name="provider" xsi:type="string">sampleform_form.sampleform_form_data_source</item>
-            <item name="deps" xsi:type="string">sampleform_form.sampleform_form_data_source</item>
+            <item name="provider" xsi:type="string">redirect_form.page_form_data_source</item>
         </item>
-        <item name="label" xsi:type="string" translate="true">Sample Form</item>
-        <item name="layout" xsi:type="array">
-            <item name="type" xsi:type="string">tabs</item>
-        </item>
+        <item name="label" xsi:type="string" translate="true">Page Information</item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
     </argument>
-
-    <dataSource name="sampleform_form_data_source">
-        <argument name="dataProvider" xsi:type="configurableObject">
-            <argument name="class" xsi:type="string">WeProvide\NginxRedirect\Ui\DataProvider\RedirectDataProvider</argument>
-            <argument name="name" xsi:type="string">sampleform_form_data_source</argument>
-            <argument name="primaryFieldName" xsi:type="string">redirect_id</argument>
-            <argument name="requestFieldName" xsi:type="string">redirect_id</argument>
-        </argument>
+    <settings>
+        <buttons>
+            <button name="save" class="Magento\Cms\Block\Adminhtml\Page\Edit\SaveButton"/>
+            <button name="back" class="Magento\Cms\Block\Adminhtml\Page\Edit\BackButton"/>
+        </buttons>
+        <namespace>redirect_form</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>redirect_form.page_form_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="page_form_data_source">
         <argument name="data" xsi:type="array">
             <item name="js_config" xsi:type="array">
                 <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
             </item>
         </argument>
+        <settings>
+            <submitUrl path="cms/page/save"/>
+        </settings>
+        <dataProvider class="WeProvide\NginxRedirect\Ui\DataProvider\RedirectDataProvider" name="page_form_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>id</primaryFieldName>
+            </settings>
+        </dataProvider>
     </dataSource>
-
-    <fieldset name="sample_fieldset">
-        <argument name="data" xsi:type="array">
-            <item name="config" xsi:type="array">
-                <item name="label" xsi:type="string" translate="true">Sample Fieldset</item>
-            </item>
-        </argument>
-
-        <!-- This field represents form id and is hidden -->
-        <field name="entity_id">
+    <fieldset name="general">
+        <settings>
+            <label/>
+        </settings>
+        <field name="id" formElement="input">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="visible" xsi:type="boolean">false</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="formElement" xsi:type="string">input</item>
-                    <item name="source" xsi:type="string">sampleform</item>
+                    <item name="source" xsi:type="string">page</item>
                 </item>
             </argument>
+            <settings>
+                <dataType>text</dataType>
+                <visible>false</visible>
+                <dataScope>id</dataScope>
+            </settings>
         </field>
-
-        <!-- This field has data type 'text' and standard 'input' form element and looks like input -->
-        <field name="title">
+        <field name="source" sortOrder="20" formElement="input">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="label" xsi:type="string">Some text</item>
-                    <item name="visible" xsi:type="boolean">true</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="formElement" xsi:type="string">input</item>
-                    <item name="source" xsi:type="string">sampleform</item>
+                    <item name="source" xsi:type="string">source</item>
                 </item>
             </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Source</label>
+                <dataScope>source</dataScope>
+            </settings>
         </field>
-
-        <!-- This field has data type 'text'
-        and override standard 'input' form element's tempate and constructor by custom ones -->
-        <field name="color">
+        <field name="target" sortOrder="20" formElement="input">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <!--component constructor-->
-                    <item name="component" xsi:type="string">Magento_SampleForm/js/form/element/color-select</item>
-                    <!--main template for form field that renders elementTmpl as a child template-->
-                    <item name="template" xsi:type="string">ui/form/field</item>
-                    <!--customized form element template that will show colors-->
-                    <item name="elementTmpl" xsi:type="string">Magento_SampleForm/form/element/color-select</item>
-                    <item name="label" xsi:type="string">Autumn colors</item>
-                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="source" xsi:type="string">target</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Target</label>
+                <dataScope>target</dataScope>
+            </settings>
+        </field>
+        <field name="status">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">WeProvide\NginxRedirect\Model\Status</item>
+                <item name="config" xsi:type="array">
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="formElement" xsi:type="string">input</item>
-                    <item name="source" xsi:type="string">sampleform</item>
+                    <item name="label" xsi:type="string" translate="true">Status</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="source" xsi:type="string">status</item>
+                    <item name="dataScope" xsi:type="string">status</item>
+                    <item name="default" xsi:type="string">0</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
                 </item>
             </argument>
         </field>

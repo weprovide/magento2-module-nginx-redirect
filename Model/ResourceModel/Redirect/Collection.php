@@ -4,7 +4,7 @@ namespace WeProvide\NginxRedirect\Model\ResourceModel\Redirect;
 
 class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
 {
-    protected $_idFieldName = 'redirect_id';
+    protected $_idFieldName = 'id';
     protected $_eventPrefix = 'weprovide_nginxredirect_redirect_collection';
     protected $_eventObject = 'redirect_collection';
 

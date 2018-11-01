@@ -19,7 +19,7 @@ class InstallSchema implements InstallSchemaInterface
         $step = $setup->getConnection()->newTable($setup->getTable('nginxredirects'));
 
         $step->addColumn(
-            'redirect_id',
+            'id',
             \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
             null,
             array('identity' => true, 'nullable' => false, 'primary' => true, 'unsigned' => true, ),
