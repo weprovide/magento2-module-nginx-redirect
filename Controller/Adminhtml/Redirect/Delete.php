@@ -2,6 +2,7 @@
 
 namespace WeProvide\NginxRedirect\Controller\Adminhtml\Redirect;
 
+use Psr\Log\LoggerInterface;
 use Magento\Backend\App\Action\Context;
 use WeProvide\NginxRedirect\Model\RedirectFactory;
 use Magento\Framework\View\Result\PageFactory;
@@ -10,22 +11,26 @@ use WeProvide\NginxRedirect\Model\ResourceModel\Redirect\CollectionFactory;
 
 class Delete extends Index
 {
+    protected $logger;
     protected $redirectFactory;
 
     /**
      * Delete constructor.
+     * @param LoggerInterface   $logger;
      * @param Context           $context
      * @param PageFactory       $resultPageFactory
      * @param CollectionFactory $collectionFactory
      * @param RedirectFactory   $redirectFactory
      */
     public function __construct(
+        LoggerInterface $logger,
         Context $context,
         PageFactory $resultPageFactory,
         CollectionFactory $collectionFactory,
         RedirectFactory $redirectFactory
     ) {
         parent::__construct($context, $resultPageFactory, $collectionFactory);
+        $this->logger          = $logger;
         $this->redirectFactory = $redirectFactory;
     }
 
@@ -57,7 +62,7 @@ class Delete extends Index
                 $this->messageManager->addError(
                     __('Something went wrong while deleting the redirect data')
                 );
-                $this->_objectManager->get('Psr\Log\LoggerInterface')->critical($e);
+                $this->logger->critical($e);
                 $this->_redirect('nginxredirect/redirect/edit', ['id' => $this->getRequest()->getParam('id')]);
                 return;
             }
