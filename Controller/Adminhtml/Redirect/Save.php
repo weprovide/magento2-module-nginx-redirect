@@ -2,6 +2,8 @@
 
 namespace WeProvide\NginxRedirect\Controller\Adminhtml\Redirect;
 
+use Magento\Backend\Model\Session;
+use Psr\Log\LoggerInterface;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\Response\Http\FileFactory;
@@ -14,14 +16,15 @@ use Magento\Framework\View\Result\PageFactory;
 
 class Save extends Index
 {
+    protected $session;
+    protected $logger;
     protected $redirectFactory;
-    /**
-     * @var RedirectResourceFactory
-     */
     protected $redirectResourceFactory;
 
     /**
      * Save constructor.
+     * @param Session                 $session
+     * @param LoggerInterface         $logger
      * @param RedirectFactory         $redirectFactory
      * @param RedirectResourceFactory $redirectResourceFactory
      * @param Context                 $context
@@ -29,6 +32,8 @@ class Save extends Index
      * @param CollectionFactory       $collectionFactory
      */
     public function __construct(
+        Session $session,
+        LoggerInterface $logger,
         RedirectFactory $redirectFactory,
         RedirectResourceFactory $redirectResourceFactory,
         Context $context,
@@ -36,6 +41,8 @@ class Save extends Index
         CollectionFactory $collectionFactory
     ) {
         parent::__construct($context, $resultPageFactory, $collectionFactory);
+        $this->session                 = $session;
+        $this->logger                  = $logger;
         $this->redirectFactory         = $redirectFactory;
         $this->redirectResourceFactory = $redirectResourceFactory;
     }
@@ -88,8 +95,8 @@ class Save extends Index
                 $this->messageManager->addError(
                     __('Something went wrong while saving the step data. Please review the error log.')
                 );
-                $this->_objectManager->get('Psr\Log\LoggerInterface')->critical($e);
-                $this->_objectManager->get('Magento\Backend\Model\Session')->setPageData($data);
+                $this->logger->critical($e);
+                $this->session->setPageData($data);
                 $this->_redirect('nginxredirect/redirect/edit', ['id' => $this->getRequest()->getParam('id')]);
                 return;
             }
