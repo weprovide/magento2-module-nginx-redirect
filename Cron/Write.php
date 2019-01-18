@@ -2,6 +2,9 @@
 
 namespace WeProvide\NginxRedirect\Cron;
 
+use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\Exception\FileSystemException;
+use Magento\Framework\Filesystem;
 use Psr\Log\LoggerInterface;
 use WeProvide\NginxRedirect\Model\ResourceModel\Redirect\CollectionFactory as RedirectCollectionFactory;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -13,21 +16,25 @@ class Write
 
     protected $redirectCollectionFactory;
     protected $scopeConfig;
+    protected $filesystem;
     protected $logger;
 
     /**
      * Write constructor.
      * @param RedirectCollectionFactory $redirectCollectionFactory
      * @param ScopeConfigInterface $scopeConfig
+     * @param Filesystem $filesystem
      * @param LoggerInterface $logger
      */
     public function __construct(
         RedirectCollectionFactory $redirectCollectionFactory,
         ScopeConfigInterface $scopeConfig,
+        Filesystem $filesystem,
         LoggerInterface $logger
     ) {
         $this->redirectCollectionFactory = $redirectCollectionFactory;
         $this->scopeConfig = $scopeConfig;
+        $this->filesystem = $filesystem;
         $this->logger = $logger;
     }
 
@@ -39,14 +46,14 @@ class Write
         $redirects = array_reduce($redirects, function($accumulator, $redirect) {
             $accumulator .= $this->parse($redirect) . PHP_EOL;
             return $accumulator;
-        }, '');
+        }) ?: '';
 
         if(($path = $this->getPath()) !== null) {
-            // TODO: pass the LOCK_EX flag?
-            $result = file_put_contents($path, $redirects);
-
-            if($result === false) {
-                $this->logger->warning(self::MODULE . ' failed to write to "' . $path . '"');
+            try {
+                $root = $this->filesystem->getDirectoryWrite(DirectoryList::ROOT);
+                $root->writeFile($path, $redirects);
+            } catch(FileSystemException $exception) {
+                $this->logger->warning(self::MODULE . ' failed to write to "' . $path . '" (' . $exception->getLogMessage() . ')');
             }
         } else {
             $this->logger->warning(self::MODULE . ' is not properly configured, there is no path to write the redirects to.');
