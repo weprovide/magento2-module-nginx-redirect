@@ -33,27 +33,23 @@ class Write
 
     public function execute()
     {
-        $redirects = $this->redirectCollectionFactory->create();
+        $redirects = $this->redirectCollectionFactory->create()->toArray()['items'];
 
-        if($redirects->count() > 0) {
-            $redirects = $redirects->toArray()['items'];
+        // concatenate all redirects so that the file only has to be written to once
+        $redirects = array_reduce($redirects, function($accumulator, $redirect) {
+            $accumulator .= $this->parse($redirect) . PHP_EOL;
+            return $accumulator;
+        }, '');
 
-            // concatenate all redirects so that the file only has to be written to once
-            $redirects = array_reduce($redirects, function($accumulator, $redirect) {
-                $accumulator .= $this->parse($redirect) . PHP_EOL;
-                return $accumulator;
-            }, '');
+        if(($path = $this->getPath()) !== null) {
+            // TODO: pass the LOCK_EX flag?
+            $result = file_put_contents($path, $redirects);
 
-            if(($path = $this->getPath()) !== null) {
-                // TODO: pass the LOCK_EX flag?
-                $result = file_put_contents($path, $redirects);
-
-                if($result === false) {
-                    $this->logger->warning(self::MODULE . ' failed to write to "' . $path . '"');
-                }
-            } else {
-                $this->logger->warning(self::MODULE . ' is not properly configured, there is no path to write the redirects to.');
+            if($result === false) {
+                $this->logger->warning(self::MODULE . ' failed to write to "' . $path . '"');
             }
+        } else {
+            $this->logger->warning(self::MODULE . ' is not properly configured, there is no path to write the redirects to.');
         }
     }
 
