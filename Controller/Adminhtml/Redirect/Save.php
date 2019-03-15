@@ -3,7 +3,6 @@
 namespace WeProvide\NginxRedirect\Controller\Adminhtml\Redirect;
 
 use Magento\Backend\App\Action\Context;
-use Magento\Backend\Model\Session;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\View\Result\PageFactory;
 use Psr\Log\LoggerInterface;
@@ -13,7 +12,6 @@ use WeProvide\NginxRedirect\Model\ResourceModel\RedirectFactory as RedirectResou
 
 class Save extends Index
 {
-    protected $session;
     protected $logger;
     protected $redirectFactory;
 
@@ -29,7 +27,6 @@ class Save extends Index
 
     /**
      * Save constructor.
-     * @param Session                 $session
      * @param LoggerInterface         $logger
      * @param RedirectFactory         $redirectFactory
      * @param RedirectResourceFactory $redirectResourceFactory
@@ -38,7 +35,6 @@ class Save extends Index
      * @param CollectionFactory       $collectionFactory
      */
     public function __construct(
-        Session $session,
         LoggerInterface $logger,
         RedirectFactory $redirectFactory,
         RedirectResourceFactory $redirectResourceFactory,
@@ -47,7 +43,6 @@ class Save extends Index
         CollectionFactory $collectionFactory
     ) {
         parent::__construct($context, $resultPageFactory, $collectionFactory);
-        $this->session                 = $session;
         $this->logger                  = $logger;
         $this->redirectFactory         = $redirectFactory;
         $this->redirectResourceFactory = $redirectResourceFactory;
@@ -105,7 +100,7 @@ class Save extends Index
                     __('Something went wrong while saving the step data. Please review the error log.')
                 );
                 $this->logger->critical($e);
-                $this->session->setPageData($data);
+                $this->_session->setPageData($data);
                 $this->_redirect('nginxredirect/redirect/edit', ['id' => $this->getRequest()->getParam('id')]);
 
                 return;
