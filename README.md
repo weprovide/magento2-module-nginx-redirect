@@ -1,6 +1,6 @@
 # magento2-module-nginx-redirect
 
-Compatible with Magento 2.2.2 and higher
+Compatible with Magento 2.1.12 and higher
 
 SETUP:
 
