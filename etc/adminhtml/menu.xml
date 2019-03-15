@@ -1,7 +1,6 @@
 <?xml version="1.0" ?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
 	<menu>
-		<add id="WeProvide::top_level" module="WeProvide_NginxRedirect" resource="Magento_Backend::content" sortOrder="9999" title="WeProvide"/>
 		<add action="nginxredirect/redirect/index" id="WeProvide_NginxRedirect::redirect_index" module="WeProvide_NginxRedirect" parent="Magento_Backend::marketing_seo" resource="WeProvide_NginxRedirect::redirect_index" sortOrder="9999" title="Nginx Redirects"/>
 	</menu>
 </config>

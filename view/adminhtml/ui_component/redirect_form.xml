@@ -8,92 +8,92 @@
 <form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <argument name="data" xsi:type="array">
         <item name="js_config" xsi:type="array">
-            <item name="provider" xsi:type="string">redirect_form.page_form_data_source</item>
+            <item name="provider" xsi:type="string">redirect_form.redirect_form_data_source</item>
+            <item name="deps" xsi:type="string">redirect_form.redirect_form_data_source</item>
         </item>
-        <item name="label" xsi:type="string" translate="true">Page Information</item>
+        <item name="label" xsi:type="string" translate="true">Redirect Information</item>
+        <item name="config" xsi:type="array">
+            <item name="dataScope" xsi:type="string">data</item>
+            <item name="namespace" xsi:type="string">redirect_form</item>
+        </item>
         <item name="template" xsi:type="string">templates/form/collapsible</item>
+
+        <item name="buttons" xsi:type="array">
+            <item name="back" xsi:type="string">WeProvide\NginxRedirect\Block\Adminhtml\Redirect\Edit\BackButton</item>
+            <item name="save" xsi:type="array">
+                <item name="name" xsi:type="string">save</item>
+                <item name="label" xsi:type="string" translate="true">save</item>
+                <item name="class" xsi:type="string">primary</item>
+            </item>
+        </item>
     </argument>
-    <settings>
-        <buttons>
-            <button name="save" class="WeProvide\NginxRedirect\Block\Adminhtml\Redirect\Edit\SaveButton"/>
-            <button name="back" class="WeProvide\NginxRedirect\Block\Adminhtml\Redirect\Edit\BackButton"/>
-        </buttons>
-        <namespace>redirect_form</namespace>
-        <dataScope>data</dataScope>
-        <deps>
-            <dep>redirect_form.page_form_data_source</dep>
-        </deps>
-    </settings>
-    <dataSource name="page_form_data_source">
+
+    <dataSource name="redirect_form_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">WeProvide\NginxRedirect\Ui\DataProvider\RedirectDataProvider</argument>
+            <argument name="name" xsi:type="string">redirect_form_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+        </argument>
         <argument name="data" xsi:type="array">
             <item name="js_config" xsi:type="array">
                 <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+                <item name="submit_url" xsi:type="url" path="*/*/save"/>
             </item>
         </argument>
-        <settings>
-            <submitUrl path="nginxredirect/redirect/save"/>
-        </settings>
-        <dataProvider class="WeProvide\NginxRedirect\Ui\DataProvider\RedirectDataProvider" name="page_form_data_source">
-            <settings>
-                <requestFieldName>id</requestFieldName>
-                <primaryFieldName>id</primaryFieldName>
-            </settings>
-        </dataProvider>
     </dataSource>
+
     <fieldset name="general">
-        <settings>
-            <label/>
-        </settings>
-        <field name="id" formElement="input">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="collapsible" xsi:type="boolean">false</item>
+                <item name="label" xsi:type="string"/>
+            </item>
+        </argument>
+        <field name="id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="source" xsi:type="string">page</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Redirect Id</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="dataScope" xsi:type="string">id</item>
+                    <item name="visible" xsi:type="boolean">false</item>
                 </item>
             </argument>
-            <settings>
-                <dataType>text</dataType>
-                <visible>false</visible>
-                <dataScope>id</dataScope>
-            </settings>
         </field>
-        <field name="source" sortOrder="10" formElement="input">
+        <field name="source">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="source" xsi:type="string">source</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Source</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="dataScope" xsi:type="string">source</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
                 </item>
             </argument>
-            <settings>
-                <validation>
-                    <rule name="required-entry" xsi:type="boolean">true</rule>
-                </validation>
-                <dataType>text</dataType>
-                <label translate="true">Source</label>
-                <dataScope>source</dataScope>
-            </settings>
         </field>
-        <field name="target" sortOrder="20" formElement="input">
+        <field name="target">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="source" xsi:type="string">target</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Target</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="dataScope" xsi:type="string">target</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
                 </item>
             </argument>
-            <settings>
-                <validation>
-                    <rule name="required-entry" xsi:type="boolean">true</rule>
-                </validation>
-                <dataType>text</dataType>
-                <label translate="true">Target</label>
-                <dataScope>target</dataScope>
-            </settings>
         </field>
-        <field name="status" sortOrder="30">
+        <field name="status">
             <argument name="data" xsi:type="array">
                 <item name="options" xsi:type="object">WeProvide\NginxRedirect\Model\Status</item>
                 <item name="config" xsi:type="array">
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Status</item>
                     <item name="formElement" xsi:type="string">select</item>
-                    <item name="source" xsi:type="string">status</item>
                     <item name="dataScope" xsi:type="string">status</item>
                     <item name="default" xsi:type="string">0</item>
                     <item name="validation" xsi:type="array">

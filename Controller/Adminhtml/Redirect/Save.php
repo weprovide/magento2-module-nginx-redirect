@@ -2,24 +2,30 @@
 
 namespace WeProvide\NginxRedirect\Controller\Adminhtml\Redirect;
 
-use Magento\Backend\Model\Session;
-use Psr\Log\LoggerInterface;
 use Magento\Backend\App\Action\Context;
-use Magento\Framework\App\Filesystem\DirectoryList;
-use Magento\Framework\App\Response\Http\FileFactory;
+use Magento\Backend\Model\Session;
 use Magento\Framework\Controller\ResultFactory;
-use Magento\Framework\File\Csv;
+use Magento\Framework\View\Result\PageFactory;
+use Psr\Log\LoggerInterface;
 use WeProvide\NginxRedirect\Model\RedirectFactory;
 use WeProvide\NginxRedirect\Model\ResourceModel\Redirect\CollectionFactory;
 use WeProvide\NginxRedirect\Model\ResourceModel\RedirectFactory as RedirectResourceFactory;
-use Magento\Framework\View\Result\PageFactory;
 
 class Save extends Index
 {
     protected $session;
     protected $logger;
     protected $redirectFactory;
+
+    /**
+     * @var RedirectResourceFactory
+     */
     protected $redirectResourceFactory;
+
+    /**
+     * @var \Magento\Framework\Message\ManagerInterface
+     */
+    protected $messageManager;
 
     /**
      * Save constructor.
@@ -45,6 +51,7 @@ class Save extends Index
         $this->logger                  = $logger;
         $this->redirectFactory         = $redirectFactory;
         $this->redirectResourceFactory = $redirectResourceFactory;
+        $this->messageManager          = $context->getMessageManager();
     }
 
     /**
@@ -76,6 +83,7 @@ class Save extends Index
                 $model->addData($data);
 
                 $resourceModel->save($model);
+                $this->messageManager->addSuccessMessage(__('Redirect successfully saved.'));
 
                 if ($this->getRequest()->getParam('back')) {
                     $this->_redirect('nginxredirect/redirect/edit', ['id' => $model->getId()]);
@@ -90,6 +98,7 @@ class Save extends Index
                 } else {
                     $this->_redirect('nginxredirect/redirect/create');
                 }
+
                 return;
             } catch (\Exception $e) {
                 $this->messageManager->addError(
@@ -98,6 +107,7 @@ class Save extends Index
                 $this->logger->critical($e);
                 $this->session->setPageData($data);
                 $this->_redirect('nginxredirect/redirect/edit', ['id' => $this->getRequest()->getParam('id')]);
+
                 return;
             }
         }

@@ -2,12 +2,12 @@
 
 namespace WeProvide\NginxRedirect\Controller\Adminhtml\Redirect;
 
+use Magento\Backend\App\Action\Context;
+use Magento\Framework\View\Result\PageFactory;
 use WeProvide\NginxRedirect\Model\Redirect;
 use WeProvide\NginxRedirect\Model\ResourceModel\Redirect\CollectionFactory;
-use Magento\Framework\View\Result\PageFactory;
-use Magento\Backend\App\Action\Context;
 
-class Edit extends \WeProvide\NginxRedirect\Controller\Adminhtml\Redirect\Index
+class Edit extends Index
 {
     protected $resultPageFactory;
     protected $redirect;
@@ -40,12 +40,12 @@ class Edit extends \WeProvide\NginxRedirect\Controller\Adminhtml\Redirect\Index
             if (is_null($model->getId())) {
                 $this->messageManager->addError(__('This redirect no longer exists.'));
                 $this->_redirect('nginxredirect/redirect/index');
+
                 return;
             }
             $this->messageManager->addSuccessMessage(__('Redirect %s successfully edited.'), $id);
         }
 
-        $this->messageManager->addSuccessMessage(__('Redirect successfully added.'));
         return $this->resultPageFactory->create();
     }
 

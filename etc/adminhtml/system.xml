@@ -2,7 +2,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
         <tab id="weprovide" translate="label" sortOrder="500">
-            <label>We/Provide</label>
+            <label>We Provide</label>
         </tab>
         <section id="weprovide_nginxredirect" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="1">
             <label>Nginx Redirect</label>

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace WeProvide\NginxRedirect\Controller\Adminhtml\Redirect;
 
 class Create extends Index

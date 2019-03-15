@@ -7,30 +7,33 @@ use WeProvide\NginxRedirect\Model\ResourceModel\Redirect\CollectionFactory;
 
 class RedirectDataProvider extends AbstractDataProvider
 {
-    protected $collection;
+    /**
+     * @var array
+     */
+    protected $loadedData;
 
     public function __construct(
-        CollectionFactory $collection,
         $name,
         $primaryFieldName,
         $requestFieldName,
+        CollectionFactory $redirectCollectionFactory,
         array $meta = [],
         array $data = []
-    )
-    {
-        $this->collection = $collection->create();
+    ) {
+        $this->collection = $redirectCollectionFactory->create();
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
     }
 
     public function getData()
     {
-        $collection = $this->getCollection();
-
-        $arrItems = [];
-        foreach ($collection as $item) {
-            $arrItems[$item->getId()] = $item->toArray([]);
+        if (isset($this->loadedData)) {
+            return $this->loadedData;
+        }
+        $items = $this->collection->getItems();
+        foreach ($items as $redirect) {
+            $this->loadedData[$redirect->getId()] = $redirect->getData();
         }
 
-        return $arrItems;
+        return $this->loadedData;
     }
 }
