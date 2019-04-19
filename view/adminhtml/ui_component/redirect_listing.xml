@@ -106,6 +106,17 @@
                 </argument>
             </action>
         </massaction>
+        <paging name="listing_paging">
+            <argument name="data" xsi:type="array">x
+                <item name="config" xsi:type="array">
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="provider" xsi:type="string">redirect_listing.listing_top.bookmarks</item>
+                        <item name="namespace" xsi:type="string">current.paging</item>
+                    </item>
+                    <item name="selectProvider" xsi:type="string">match_listing.match_listing.match_columns.ids</item>
+                </item>
+            </argument>
+        </paging>
     </container>
 
     <columns name="redirects_columns">
