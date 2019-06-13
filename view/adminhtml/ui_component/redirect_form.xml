@@ -87,6 +87,17 @@
                 </item>
             </argument>
         </field>
+        <field name="match_operator">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">WeProvide\NginxRedirect\Model\Source\Config\MatchOperator</item>
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Matching</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="dataScope" xsi:type="string">match_operator</item>
+                </item>
+            </argument>
+        </field>
         <field name="status">
             <argument name="data" xsi:type="array">
                 <item name="options" xsi:type="object">WeProvide\NginxRedirect\Model\Status</item>

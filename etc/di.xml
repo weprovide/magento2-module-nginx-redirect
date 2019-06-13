@@ -13,4 +13,37 @@
             </argument>
         </arguments>
     </type>
+
+    <type name="WeProvide\NginxRedirect\Model\Source\Config\MatchOperator">
+        <arguments>
+            <argument name="defaultMatchOperator" xsi:type="string">prefix</argument>
+
+            <argument name="matchOperators" xsi:type="array">
+                <item name="prefix" xsi:type="array">
+                    <item name="label" xsi:type="string">Default (Prefix)</item>
+                    <item name="operator" xsi:type="string" />
+                </item>
+
+                <item name="exact" xsi:type="array">
+                    <item name="label" xsi:type="string">Exact (=)</item>
+                    <item name="operator" xsi:type="string">=</item>
+                </item>
+
+                <item name="case-sensitive-regular-expression" xsi:type="array">
+                    <item name="label" xsi:type="string">Case-Sensitive Regular Expression (~)</item>
+                    <item name="operator" xsi:type="string">~</item>
+                </item>
+
+                <item name="case-insensitive-regular-expression" xsi:type="array">
+                    <item name="label" xsi:type="string">Case-Insensitive Regular Expression (~*)</item>
+                    <item name="operator" xsi:type="string">~*</item>
+                </item>
+
+                <item name="best-non-regular-expression-match" xsi:type="array">
+                    <item name="label" xsi:type="string">Best Non-Regular Expression Match (^~)</item>
+                    <item name="operator" xsi:type="string">^~</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
 </config>
