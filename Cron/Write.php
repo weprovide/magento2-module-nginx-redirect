@@ -8,6 +8,8 @@ use Magento\Framework\Filesystem;
 use Psr\Log\LoggerInterface;
 use WeProvide\NginxRedirect\Model\ResourceModel\Redirect\CollectionFactory as RedirectCollectionFactory;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use WeProvide\NginxRedirect\Model\Source\Config\MatchOperator as MatchOperatorSource;
+use WeProvide\NginxRedirect\Model\Source\Config\MatchOperator;
 
 class Write
 {
@@ -18,6 +20,7 @@ class Write
     protected $scopeConfig;
     protected $filesystem;
     protected $logger;
+    protected $matchOperatorSource;
 
     /**
      * Write constructor.
@@ -25,17 +28,20 @@ class Write
      * @param ScopeConfigInterface $scopeConfig
      * @param Filesystem $filesystem
      * @param LoggerInterface $logger
+     * @param MatchOperatorSource $matchOperatorSource
      */
     public function __construct(
         RedirectCollectionFactory $redirectCollectionFactory,
         ScopeConfigInterface $scopeConfig,
         Filesystem $filesystem,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        MatchOperatorSource $matchOperatorSource
     ) {
         $this->redirectCollectionFactory = $redirectCollectionFactory;
         $this->scopeConfig = $scopeConfig;
         $this->filesystem = $filesystem;
         $this->logger = $logger;
+        $this->matchOperatorSource = $matchOperatorSource;
     }
 
     public function execute()
@@ -67,12 +73,19 @@ class Write
         return $this->scopeConfig->getValue(self::PATH) ?: null;
     }
 
-
     /**
      * @param \WeProvide\NginxRedirect\Model\Redirect $redirect
      * @return string
      */
     protected function parse($redirect) {
-        return 'location /' . $redirect['source'] . ' { return ' . $redirect['status'] . ' ' . $redirect['target'] . '; }';
+        $matchOperator = $this->getMatchOperator($redirect);
+        return 'location' . $matchOperator . ' /' . $redirect['source'] . ' { return ' . $redirect['status'] . ' ' . $redirect['target'] . '; }';
+    }
+
+    protected function getMatchOperator($redirect)
+    {
+        $matchOperatorCode = $redirect->getMatchOperator();
+        $matchOperator = $this->matchOperatorSource->getMatchOperatorByCode($matchOperatorCode);
+        return $matchOperator['operator'];
     }
 }

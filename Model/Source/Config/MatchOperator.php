@@ -28,4 +28,9 @@ class MatchOperator implements OptionSourceInterface
             ];
         }, $matchOperatorCodes);
     }
+
+    public function getMatchOperatorByCode(string $matchOperatorCode = null): array
+    {
+        return $this->matchOperators[$matchOperatorCode] ?? $this->defaultMatchOperator;
+    }
 }
