@@ -60,6 +60,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
             'type' => Table::TYPE_TEXT,
             'default' => null,
             'nullable' => true,
+            'length' => 255,
             'after' => 'target',
             'comment' => 'What match operator to use in the Nginx configuration.'
         ], $setup);
