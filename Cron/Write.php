@@ -6,6 +6,7 @@ use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Filesystem;
 use Psr\Log\LoggerInterface;
+use WeProvide\NginxRedirect\Exception\Source\Config\MatchOperator\UnknownMatchOperator;
 use WeProvide\NginxRedirect\Model\ResourceModel\Redirect\CollectionFactory as RedirectCollectionFactory;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use WeProvide\NginxRedirect\Model\Source\Config\MatchOperator as MatchOperatorSource;
@@ -85,7 +86,13 @@ class Write
     protected function getMatchOperator($redirect)
     {
         $matchOperatorCode = $redirect->getMatchOperator();
-        $matchOperator = $this->matchOperatorSource->getMatchOperatorByCodeOrDefault($matchOperatorCode);
-        return $matchOperator['operator'];
+
+        try {
+            $matchOperator = $this->matchOperatorSource->getMatchOperatorByCodeOrDefault($matchOperatorCode);
+            return $matchOperator['operator'];
+        } catch (UnknownMatchOperator $exception) {
+            $this->logger->warning($exception->getMessage());
+            return '';
+        }
     }
 }

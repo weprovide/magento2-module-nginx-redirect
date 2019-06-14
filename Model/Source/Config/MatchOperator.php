@@ -4,6 +4,7 @@ namespace WeProvide\NginxRedirect\Model\Source\Config;
 
 use Magento\Framework\Data\OptionSourceInterface;
 use Magento\Framework\Exception\LocalizedException;
+use WeProvide\NginxRedirect\Exception\Source\Config\MatchOperator\UnknownMatchOperator;
 
 class MatchOperator implements OptionSourceInterface
 {
@@ -33,7 +34,7 @@ class MatchOperator implements OptionSourceInterface
     /**
      * @param string|null $matchOperatorCode
      * @return array
-     * @throws LocalizedException
+     * @throws UnknownMatchOperator
      */
     public function getMatchOperatorByCodeOrDefault(string $matchOperatorCode = null): array
     {
@@ -42,12 +43,12 @@ class MatchOperator implements OptionSourceInterface
 
     /**
      * @return array
-     * @throws LocalizedException
+     * @throws UnknownMatchOperator
      */
     public function getDefaultMatchOperator(): array
     {
         if (!isset($this->matchOperators[$this->defaultMatchOperator])) {
-            throw new LocalizedException(__('Default match operator ("' . $this->defaultMatchOperator . '") does not exist."'));
+            throw new UnknownMatchOperator(__('Default match operator ("' . $this->defaultMatchOperator . '") does not exist."'));
         }
 
         return $this->matchOperators[$this->defaultMatchOperator];
