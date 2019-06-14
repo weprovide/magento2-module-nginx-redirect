@@ -41,7 +41,7 @@ class Export extends Index
     {
         $collection = $this->collectionFactory->create();
         $data       = $collection->getData();
-        array_unshift($data, ['id', 'source', 'target', 'status']);
+        array_unshift($data, ['id', 'source', 'target', 'match_operator', 'status']);
         $fileName = 'export.csv';
         $filePath = $this->directoryList->getPath(DirectoryList::VAR_DIR) . DIRECTORY_SEPARATOR . $fileName;
         $this->csvProcessor
