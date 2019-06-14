@@ -3,6 +3,7 @@
 namespace WeProvide\NginxRedirect\Model\Source\Config;
 
 use Magento\Framework\Data\OptionSourceInterface;
+use Magento\Framework\Exception\LocalizedException;
 
 class MatchOperator implements OptionSourceInterface
 {
@@ -29,8 +30,26 @@ class MatchOperator implements OptionSourceInterface
         }, $matchOperatorCodes);
     }
 
-    public function getMatchOperatorByCode(string $matchOperatorCode = null): array
+    /**
+     * @param string|null $matchOperatorCode
+     * @return array
+     * @throws LocalizedException
+     */
+    public function getMatchOperatorByCodeOrDefault(string $matchOperatorCode = null): array
     {
-        return $this->matchOperators[$matchOperatorCode] ?? $this->defaultMatchOperator;
+        return $this->matchOperators[$matchOperatorCode] ?? $this->getDefaultMatchOperator();
+    }
+
+    /**
+     * @return array
+     * @throws LocalizedException
+     */
+    public function getDefaultMatchOperator(): array
+    {
+        if (!isset($this->matchOperators[$this->defaultMatchOperator])) {
+            throw new LocalizedException(__('Default match operator ("' . $this->defaultMatchOperator . '") does not exist."'));
+        }
+
+        return $this->matchOperators[$this->defaultMatchOperator];
     }
 }

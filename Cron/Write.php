@@ -85,7 +85,7 @@ class Write
     protected function getMatchOperator($redirect)
     {
         $matchOperatorCode = $redirect->getMatchOperator();
-        $matchOperator = $this->matchOperatorSource->getMatchOperatorByCode($matchOperatorCode);
+        $matchOperator = $this->matchOperatorSource->getMatchOperatorByCodeOrDefault($matchOperatorCode);
         return $matchOperator['operator'];
     }
 }
