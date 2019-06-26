@@ -12,6 +12,7 @@
                 <label>Path</label>
                 <field id="path" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Config Path</label>
+                    <comment>Relative to the root directory of the Magento installation.</comment>
                 </field>
             </group>
         </section>
