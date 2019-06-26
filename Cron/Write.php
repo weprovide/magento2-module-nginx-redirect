@@ -80,7 +80,7 @@ class Write
      */
     protected function parse($redirect) {
         $matchOperator = $this->getMatchOperator($redirect);
-        return 'location' . $matchOperator . ($matchOperator ? ' ' : '') . '/' . $redirect['source'] . ' { return ' . $redirect['status'] . ' ' . $redirect['target'] . '; }';
+        return 'location ' . $matchOperator . ($matchOperator ? ' ' : '') . '/' . $redirect['source'] . ' { return ' . $redirect['status'] . ' ' . $redirect['target'] . '; }';
     }
 
     protected function getMatchOperator($redirect)
