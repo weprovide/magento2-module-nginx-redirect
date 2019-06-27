@@ -3,7 +3,6 @@
 namespace WeProvide\NginxRedirect\Model\Source\Config;
 
 use Magento\Framework\Data\OptionSourceInterface;
-use Magento\Framework\Exception\LocalizedException;
 use WeProvide\NginxRedirect\Exception\Source\Config\MatchOperator\UnknownMatchOperator;
 
 class MatchOperator implements OptionSourceInterface
@@ -13,7 +12,7 @@ class MatchOperator implements OptionSourceInterface
 
     public function __construct(string $defaultMatchOperator, array $matchOperators)
     {
-        $this->defaultMatchOperator = $matchOperators[$defaultMatchOperator];
+        $this->defaultMatchOperator = $defaultMatchOperator;
         $this->matchOperators       = $matchOperators;
     }
 
