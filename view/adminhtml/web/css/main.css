@@ -1,0 +1,11 @@
+.config-nav-block.weprovide-tab strong:before {
+    background: url(../images/logo.png) no-repeat;
+    background-size: 24px;
+    background-position: 0 -3px;
+    width: 24px;
+    height: 16px;
+    content: '';
+    display: inline-block;
+    margin-right: 12px;
+    vertical-align: bottom;
+}
