@@ -15,7 +15,7 @@ use WeProvide\NginxRedirect\Model\Source\Config\MatchOperator;
 class Write
 {
     const MODULE = 'WeProvide_NginxRedirects';
-    const PATH = 'weprovide_nginxredirect/path/path';
+    const PATH   = 'weprovide_nginxredirect/path/path';
 
     protected $redirectCollectionFactory;
     protected $scopeConfig;
@@ -26,10 +26,10 @@ class Write
     /**
      * Write constructor.
      * @param RedirectCollectionFactory $redirectCollectionFactory
-     * @param ScopeConfigInterface $scopeConfig
-     * @param Filesystem $filesystem
-     * @param LoggerInterface $logger
-     * @param MatchOperatorSource $matchOperatorSource
+     * @param ScopeConfigInterface      $scopeConfig
+     * @param Filesystem                $filesystem
+     * @param LoggerInterface           $logger
+     * @param MatchOperatorSource       $matchOperatorSource
      */
     public function __construct(
         RedirectCollectionFactory $redirectCollectionFactory,
@@ -39,10 +39,10 @@ class Write
         MatchOperatorSource $matchOperatorSource
     ) {
         $this->redirectCollectionFactory = $redirectCollectionFactory;
-        $this->scopeConfig = $scopeConfig;
-        $this->filesystem = $filesystem;
-        $this->logger = $logger;
-        $this->matchOperatorSource = $matchOperatorSource;
+        $this->scopeConfig               = $scopeConfig;
+        $this->filesystem                = $filesystem;
+        $this->logger                    = $logger;
+        $this->matchOperatorSource       = $matchOperatorSource;
     }
 
     public function execute()
@@ -50,16 +50,17 @@ class Write
         $redirects = $this->redirectCollectionFactory->create()->toArray()['items'];
 
         // concatenate all redirects so that the file only has to be written to once
-        $redirects = array_reduce($redirects, function($accumulator, $redirect) {
+        $redirects = array_reduce($redirects, function ($accumulator, $redirect) {
             $accumulator .= $this->parse($redirect) . PHP_EOL;
+
             return $accumulator;
         }) ?: '';
 
-        if(($path = $this->getPath()) !== null) {
+        if (($path = $this->getPath()) !== null) {
             try {
                 $root = $this->filesystem->getDirectoryWrite(DirectoryList::ROOT);
                 $root->writeFile($path, $redirects);
-            } catch(FileSystemException $exception) {
+            } catch (FileSystemException $exception) {
                 $this->logger->warning(self::MODULE . ' failed to write to "' . $path . '" (' . $exception->getLogMessage() . ')');
             }
         } else {
@@ -70,7 +71,8 @@ class Write
     /**
      * @return string|null
      */
-    protected function getPath() {
+    protected function getPath()
+    {
         return $this->scopeConfig->getValue(self::PATH) ?: null;
     }
 
@@ -78,9 +80,11 @@ class Write
      * @param \WeProvide\NginxRedirect\Model\Redirect $redirect
      * @return string
      */
-    protected function parse($redirect) {
+    protected function parse($redirect)
+    {
         $matchOperator = $this->getMatchOperator($redirect);
-        return 'location ' . $matchOperator . ($matchOperator ? ' ' : '') . '/' . $redirect['source'] . ' { return ' . $redirect['status'] . ' ' . $redirect['target'] . '; }';
+
+        return 'location ' . $matchOperator . ($matchOperator ? ' ' : '') . $redirect['source'] . ' { return ' . $redirect['status'] . ' ' . $redirect['target'] . '; }';
     }
 
     protected function getMatchOperator($redirect)
@@ -89,9 +93,11 @@ class Write
 
         try {
             $matchOperator = $this->matchOperatorSource->getMatchOperatorByCodeOrDefault($matchOperatorCode);
+
             return $matchOperator['operator'];
         } catch (UnknownMatchOperator $exception) {
             $this->logger->warning($exception->getMessage());
+
             return '';
         }
     }
