@@ -36,7 +36,8 @@ class Index extends \Magento\Backend\App\Action
      */
     public function execute()
     {
-        $this->_view->getPage()->getConfig()->getTitle()->prepend(__('Nginx Redirects'));
-        return $this->resultPageFactory->create();
+        $resultPage = $this->resultPageFactory->create();
+        $resultPage->getConfig()->getTitle()->prepend(__('Nginx Redirects'));
+        return $resultPage;
     }
 }
